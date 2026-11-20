@@ -4,6 +4,7 @@ import './style.css';
 import * as THREE from 'three';
 import { config } from './config.js';
 import { createGift } from './gift.js';
+import { FOLD_END, createPlane } from './plane.js';
 import { cardIn, cardOut, setMuted, unlock } from './sound.js';
 import { CARD_H, CARD_W, buildCanvas, greetingCanvas, makeCard, setFace } from './cards.js';
 
@@ -96,6 +97,9 @@ function start() {
   const GREET_POS = new THREE.Vector3(0, 2.6, 2);
   const greeting = makeCard(-1);
   scene.add(greeting);
+  // Saat lanjut ke foto, kartu ucapan dilipat jadi pesawat kertas dan terbang keluar layar.
+  const plane = createPlane(GREET_POS, GREET_S);
+  scene.add(plane.root);
 
   // ---- State ----
   // closed | opening | greeting | revealing | gallery | focus | closing
@@ -107,7 +111,7 @@ function start() {
   const tl = { t: 0 };
   const STAGGER = Math.min(0.12, 1.6 / N);
   const G = 2.0; // waktu timeline saat kartu ucapan terbuka penuh
-  const PHOTOS_AT = G + 0.5;
+  const PHOTOS_AT = G + FOLD_END; // foto mulai keluar saat pesawat mulai terbang
   const TOTAL = PHOTOS_AT + (N - 1) * STAGGER + 1.1;
 
   const clamp01 = (x) => Math.min(1, Math.max(0, x));
@@ -120,11 +124,16 @@ function start() {
     const b = ease(clamp01((u - 0.5) / 0.5));
     gift.lid.position.set(2.9 * b, 1.6 + 1.4 * a - 2.8 * b, 0.4 * b);
     gift.lid.rotation.y = 0.5 * b;
-    const v = ease(clamp01((t - 0.9) / 1.1)) * (1 - ease(clamp01((t - G) / 0.8)));
-    greeting.visible = v > 0;
+    // Saat menutup kembali, kartu ucapan tidak ditampilkan lagi (sudah terbang pergi).
+    const closing = state === 'closing';
+    const v = ease(clamp01((t - 0.9) / 1.1));
+    const fold = t - G;
+    greeting.visible = !closing && v > 0 && fold <= 0;
+    plane.root.visible = !closing && fold > 0;
+    if (plane.root.visible && plane.pose(fold) >= 1) plane.root.visible = false;
     greeting.position.set(GREET_POS.x * v, 1.5 + (GREET_POS.y - 1.5) * v + Math.sin(Math.PI * v) * 0.4, GREET_POS.z * v);
     greeting.scale.setScalar(0.5 + (GREET_S - 0.5) * v);
-    greeting.rotation.set((1 - v) * (-Math.PI / 2), 0, 0.02 * v);
+    greeting.rotation.set((1 - v) * (-Math.PI / 2), 0, 0);
     cards.forEach((c, i) => {
       const e = ease(clamp01((t - (PHOTOS_AT + i * STAGGER)) / 1.1));
       c.visible = e > 0;
@@ -377,6 +386,7 @@ function start() {
     }),
   ).then(async (fails) => {
     setFace(greeting, await greetingCanvas(config.name, config.message));
+    plane.setMap(greeting.material[4].map);
     ring.add(...cards);
     const n = fails.filter(Boolean).length;
     if (n) loading.textContent = `${n} foto tidak bisa dimuat dan diganti placeholder.`;
