@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kado ulang tahun</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect x='2' y='6' width='12' height='8' fill='%23cdbd9f'/%3E%3Crect x='7' y='6' width='2' height='8' fill='%237a1f2b'/%3E%3C/svg%3E">
+</head>
+<body data-state="closed">
+  <main class="app">
+    <header class="head">
+      <div>
+        <h1 id="title">Selamat ulang tahun</h1>
+        <p id="lead"></p>
+      </div>
+      <button type="button" id="sound" aria-pressed="true">Sound: On</button>
+    </header>
+
+    <section class="stage" id="stage" aria-label="Kado 3D">
+      <canvas id="canvas" aria-hidden="true"></canvas>
+      <p id="loading" role="status">Memuat foto…</p>
+    </section>
+
+    <ul id="list" class="list" aria-label="Daftar foto"></ul>
+
+    <footer class="controls">
+      <button type="button" id="open" class="primary" disabled>Buka kadonya</button>
+      <button type="button" id="continue" class="primary" hidden>Lihat foto-fotonya</button>
+      <button type="button" id="prev" hidden>Foto sebelumnya</button>
+      <p id="caption" class="caption" hidden></p>
+      <button type="button" id="next" hidden>Foto berikutnya</button>
+      <button type="button" id="zoom" hidden>Perbesar foto</button>
+      <button type="button" id="back" hidden>Kembali ke galeri</button>
+      <button type="button" id="reset" hidden>Tutup kembali kadonya</button>
+    </footer>
+
+    <p id="status" class="sr-only" role="status"></p>
+  </main>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

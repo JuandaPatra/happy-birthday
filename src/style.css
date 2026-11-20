@@ -1,0 +1,202 @@
+:root {
+  --paper: #d8e0e6; /* biru abu dusty; juga dibaca main.js untuk latar 3D */
+  --ink: #1d1a17;
+  --muted: #4a5560;
+  --accent: #7a1f2b; /* satu-satunya aksen: pita kado dan tombol utama */
+  --on-accent: #faf7f0;
+  --display: 'Fraunces', Georgia, serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  overscroll-behavior: none;
+  -webkit-tap-highlight-color: transparent;
+  background: var(--paper);
+  color: var(--ink);
+  font: 1rem/1.5 system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+.app {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  height: 100vh;
+  height: 100dvh; /* Safari < 15.4 memakai 100vh di atas */
+}
+
+.head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 24px 8px;
+}
+.head button {
+  flex: none;
+  padding: 0 14px;
+  font-size: 0.875rem;
+}
+
+h1 {
+  margin: 0;
+  font: 600 clamp(1.6rem, 5vw, 2.75rem) / 1.1 var(--display);
+}
+
+#lead {
+  margin: 8px 0 0;
+  max-width: 52ch;
+  color: var(--muted);
+}
+
+.stage {
+  position: relative;
+  min-height: 0;
+}
+
+#canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+
+#loading {
+  position: absolute;
+  left: 24px;
+  bottom: 8px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 12px 24px 20px;
+}
+
+.caption {
+  margin: 0;
+  min-width: 12ch;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+button {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 20px;
+  border: 1px solid var(--ink);
+  border-radius: 3px;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
+}
+button:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+button:active {
+  transform: translateY(1px);
+}
+button.primary {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--on-accent);
+}
+button.primary:hover {
+  background: #5d1620;
+  border-color: #5d1620;
+}
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+  background: transparent;
+  color: var(--muted);
+  border-style: dashed;
+}
+button.primary:disabled {
+  background: transparent;
+  border-color: var(--muted);
+}
+
+:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.sr-only,
+.list {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  list-style: none;
+}
+
+/* Tanpa WebGL: galeri biasa */
+.fallback .app {
+  display: block;
+  height: auto;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+.fallback .list {
+  position: static;
+  width: auto;
+  height: auto;
+  margin: 0;
+  padding: 16px 24px 32px;
+  overflow: visible;
+  clip: auto;
+  clip-path: none;
+  white-space: normal;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr));
+  gap: 16px;
+}
+.fallback .list img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border: 12px solid #faf7f0;
+}
+.fallback .list .ph {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 3 / 4;
+  background: #d9cdb8;
+  border: 12px solid #faf7f0;
+  font-family: var(--display);
+  font-weight: 600;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
