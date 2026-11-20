@@ -55,7 +55,7 @@ function showFallback() {
 
 let renderer;
 try {
-  renderer = new THREE.WebGLRenderer({ canvas: $('canvas'), antialias: true });
+  renderer = new THREE.WebGLRenderer({ canvas: $('canvas'), antialias: true, alpha: true });
 } catch {
   showFallback();
 }
@@ -67,7 +67,8 @@ function start() {
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color(getComputedStyle(document.documentElement).getPropertyValue('--paper').trim());
+  // Canvas transparan: latar halaman (--paper) tampil langsung, tidak bergantung pada pembacaan CSS
+  // saat skrip jalan (di Safari CSS bisa belum terpasang, warna jadi putih).
   const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100);
   const TAN = Math.tan((40 / 2) * (Math.PI / 180));
 

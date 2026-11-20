@@ -1,5 +1,5 @@
 :root {
-  --paper: #d8e0e6; /* biru abu dusty; juga dibaca main.js untuk latar 3D */
+  --paper: #d8e0e6; /* biru abu dusty; canvas 3D transparan jadi latar ini tampil di belakang adegan */
   --ink: #1d1a17;
   --muted: #4a5560;
   --accent: #7a1f2b; /* satu-satunya aksen: pita kado dan tombol utama */
