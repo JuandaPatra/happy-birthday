@@ -1,4 +1,5 @@
 import '@fontsource/fraunces/400.css';
+import '@fontsource/fraunces/400-italic.css';
 import '@fontsource/fraunces/600.css';
 import './style.css';
 import * as THREE from 'three';
@@ -15,7 +16,7 @@ const N = items.length;
 const label = (i) => items[i]?.alt || `Foto ${i + 1}`;
 
 document.title = `Kado ulang tahun untuk ${config.name}`;
-$('title').textContent = `Selamat ulang tahun, ${config.name}`;
+$('name').textContent = config.name;
 const HINT = 'Ada kado untukmu. Buka kotaknya untuk melihat isinya.';
 $('lead').textContent = HINT;
 
@@ -190,7 +191,7 @@ function start() {
       $('continue').focus();
     } else if (state === 'revealing') {
       setState('gallery');
-      $('lead').textContent = config.message;
+      $('lead').textContent = 'Sebelas bulan dari tahun ini, dikumpulkan dalam satu kotak menjadi foto terbaik yang pernah kulihat tahun 2026.';
       say(`Foto-fotonya muncul. ${updateCaption()}`);
       $('next').focus();
     } else if (state === 'closing') {
